@@ -15,9 +15,10 @@ const PORT = process.env.PORT || 3000;
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://voiceofher-frontend.vercel.app'],
+  origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://voiceofher-frontend.onrender.com'],
   credentials: true
 }));
+
 
 
 // Rate limiting
