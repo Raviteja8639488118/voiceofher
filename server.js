@@ -51,7 +51,7 @@ app.get('/api/health', (req, res) => {
 });
 // Root route
 app.get('/', (req, res) => {
-  res.send('Welcome to the Voice of Her API 👋');
+  res.send('Welcome to the Voice of Her API 👋 RP chesaadu raa');
 });
 
 
