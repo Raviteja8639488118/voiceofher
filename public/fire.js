@@ -1,5 +1,9 @@
 // Backend API configuration
-const API_BASE_URL = 'http://localhost:3000/api';
+// Auto-detect backend base URL
+const API_BASE_URL = window.location.hostname.includes("localhost")
+  ? "http://localhost:3000/api"
+  : "https://voiceofher.onrender.com/api";
+
 
 // Utility functions
 function getCookie(name) {
