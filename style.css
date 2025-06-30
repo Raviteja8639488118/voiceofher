@@ -1,0 +1,343 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: url("");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* overflow: hidden; */ /* Remove or comment out this line */
+}
+
+/* Header */
+header {
+  background-color: pink;
+  color: white;
+  padding: 15px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.container {
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+}
+
+/* Logo and Heading */
+.logo-heading {
+  display: flex;
+  align-items: center;
+}
+
+.logo-heading img {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Navigation */
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+/* Add this to style the Login Form link as a button in the header navigation */
+nav ul li a[href="login.html"] {
+  background: #e75480;
+  color: #fff !important;
+  padding: 8px 22px;
+  border-radius: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
+  border: none;
+  box-shadow: 0 2px 8px rgba(231, 84, 128, 0.08);
+  margin-left: 10px;
+  display: inline-block;
+}
+
+nav ul li a[href="login.html"]:hover {
+  background: #c13c6f;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Add this to style the Home link as a button in the header navigation */
+nav ul li a[href="login.html"] {
+  background: #e75480;
+  color: #fff !important;
+  padding: 8px 22px;
+  border-radius: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
+  border: none;
+  box-shadow: 0 2px 8px rgba(231, 84, 128, 0.08);
+  margin-left: 10px;
+  display: inline-block;
+}
+
+nav ul li a[href="login.html"]:hover {
+  background: #c13c6f;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Aadhaar Section */
+.user-info {
+  font-size: 14px;
+  background: white;
+  color: #333;
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Main Content */
+main {
+  flex: 1;
+  padding: 90px 0 20px 0; /* Increase top padding to match header height */
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  width: 100%;
+}
+
+/* Left Section (Takes 75% of Space) */
+.left {
+  flex: 3;
+  padding: 10px;
+}
+
+/* Grid Layout for Blocks (Filling the Entire Section) */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  grid-template-rows: 1fr 1fr; /* Two rows */
+  gap: 40px; /* Increased gap for better separation */
+  width: 100%;
+}
+
+/* Block Styles (Now Larger) */
+.block {
+  background: white;
+  border-radius: 10px;
+  text-align: center;
+  padding: 15px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Increase Image Size */
+.block img {
+  width: 50%;
+  height: 200px; /* Increased height for better visibility */
+  object-fit: cover; /* Changed to cover for better aspect ratio */
+  border-radius: 10px 10px 0 0;
+}
+
+.block p {
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.block:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Right Section (1/4 Width for Success Stories) */
+.right {
+  width: 23%;
+  background: white;
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  max-height: calc(100vh - 100px); /* Ensure it doesn't push the footer out */
+  overflow-y: auto;
+}
+
+.right h2 {
+  text-align: center;
+  color: #4a90e2;
+}
+
+.right ul {
+  list-style: none;
+  padding: 0;
+}
+
+.right ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* About Us and Contact Sections */
+.about-section,
+.contact-section {
+  background: #fff;
+  border-radius: 12px;
+  margin: 40px auto 0 auto;
+  padding: 32px 28px;
+  width: 92%;
+  max-width: 750px;
+  box-shadow: 0 4px 18px rgba(74, 144, 226, 0.08),
+    0 1.5px 6px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s;
+}
+
+.about-section:hover,
+.contact-section:hover {
+  box-shadow: 0 8px 24px rgba(74, 144, 226, 0.13), 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+.about-section h2,
+.contact-section h2 {
+  color: #e75480;
+  margin-bottom: 18px;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.about-section p,
+.contact-section ul,
+.contact-section li {
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.contact-section ul {
+  padding: 0;
+  margin: 0;
+}
+
+.contact-section li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.contact-section a {
+  color: #4a90e2;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+/* Center the Footer */
+footer {
+  background-color: pink;
+  color: white;
+  text-align: center;
+  padding: 18px 0;
+  font-size: 1.1rem;
+  margin-top: 40px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .left,
+  .right {
+    width: 90%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr; /* Single column for mobile */
+  }
+
+  .block {
+    width: 100%;
+  }
+
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .user-info {
+    margin-top: 10px;
+  }
+
+  .grid :hover {
+    size: 12px;
+  }
+
+  .about-section,
+  .contact-section {
+    padding: 18px 8px;
+    width: 98%;
+    font-size: 1rem;
+  }
+  .about-section h2,
+  .contact-section h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Make SOS link text black */
+a[href="sos.html"] p {
+  color: black !important;
+}
+
+/* Make Health, Security (SOS), and Economic Development text black */
+a[href="sos.html"] p,
+a[href="health.html"] p,
+a[href="economics.html"] p,
+a[href="education.html"] p {
+  color: black !important;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+}
+
+a {
+  text-decoration: none;
+  color: blue;
+  font-size: 14px;
+}

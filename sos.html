@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOS - Voice of Her</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="fire.js"></script>
+    <style>
+      #root {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        padding: 20px;
+      }
+      
+      .sos-container {
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+      }
+
+      .sos-button {
+        background: linear-gradient(135deg, #ff4757, #ff3742);
+        color: white;
+        border: none;
+        padding: 20px 40px;
+        font-size: 24px;
+        font-weight: bold;
+        border-radius: 50px;
+        cursor: pointer;
+        margin: 20px 0;
+        box-shadow: 0 8px 25px rgba(255, 71, 87, 0.3);
+        transition: all 0.3s ease;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .sos-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 35px rgba(255, 71, 87, 0.4);
+      }
+
+      .sos-button:active {
+        transform: scale(0.95);
+      }
+
+      .sos-button.sending {
+        background: linear-gradient(135deg, #ffa502, #ff9500);
+        animation: pulse 1s infinite;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+      }
+
+      .emergency-contacts {
+        margin-top: 30px;
+        width: 100%;
+      }
+
+      .emergency-contacts h3 {
+        color: white;
+        margin-bottom: 20px;
+        font-size: 20px;
+      }
+
+      .phone-number {
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        margin: 10px auto;
+        width: 250px;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      
+      .phone-number:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .contact-name {
+        font-size: 14px;
+        opacity: 0.9;
+        margin-bottom: 5px;
+      }
+
+      .no-contacts {
+        color: white;
+        text-align: center;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        margin: 10px 0;
+      }
+
+      .add-contact-btn {
+        background: linear-gradient(135deg, #2ed573, #1e90ff);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .add-contact-btn:hover {
+        transform: scale(1.05);
+      }
+
+      .alert-status {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+        font-weight: bold;
+        display: none;
+      }
+
+      .alert-success {
+        background: linear-gradient(135deg, #2ed573, #1e90ff);
+      }
+
+      .alert-error {
+        background: linear-gradient(135deg, #ff4757, #ff3742);
+      }
+
+      .location-status {
+        color: white;
+        margin: 10px 0;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="sos-container">
+        <h1 style="color: white; margin-bottom: 30px; font-size: 36px;">EMERGENCY SOS</h1>
+        
+        <div class="location-status" id="location-status">
+          Getting your location...
+        </div>
+
+        <button class="sos-button" id="sos-btn">
+          <span style="font-size: 48px;">🚨</span>
+          <span style="font-size: 16px; margin-top: 10px;">SEND SOS</span>
+        </button>
+
+        <div class="alert-status" id="alert-status"></div>
+
+        <div class="emergency-contacts">
+          <h3>Emergency Contacts</h3>
+          <div id="contacts-list">
+            <div class="no-contacts">Loading emergency contacts...</div>
+          </div>
+          <button class="add-contact-btn" onclick="window.location.href='profile.html'">
+            Add Emergency Contact
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { 
+        getEmergencyContacts, 
+        sendSOSAlert, 
+        getCurrentLocation,
+        isLoggedIn 
+      } from './fire.js';
+
+      // Check if user is logged in
+      if (!isLoggedIn()) {
+        window.location.href = 'login.html';
+      }
+
+      const sosBtn = document.getElementById('sos-btn');
+      const alertStatus = document.getElementById('alert-status');
+      const locationStatus = document.getElementById('location-status');
+      const contactsList = document.getElementById('contacts-list');
+
+      // Function to show alert status
+      function showAlert(message, type = 'success') {
+        alertStatus.textContent = message;
+        alertStatus.className = `alert-status alert-${type}`;
+        alertStatus.style.display = 'block';
+        
+        setTimeout(() => {
+          alertStatus.style.display = 'none';
+        }, 5000);
+      }
+
+      // Function to update location status
+      function updateLocationStatus(message, isError = false) {
+        locationStatus.textContent = message;
+        locationStatus.style.color = isError ? '#ff6b6b' : '#51cf66';
+      }
+
+      // Function to render emergency contacts
+      function renderContacts(contacts) {
+        if (!contacts || contacts.length === 0) {
+          contactsList.innerHTML = `
+            <div class="no-contacts">
+              No emergency contacts found. 
+              <br>Please add emergency contacts to receive help during emergencies.
+            </div>
+          `;
+          return;
+        }
+
+        contactsList.innerHTML = contacts.map(contact => `
+          <div class="phone-number" onclick="window.location.href='tel:${contact.phone}'">
+            <div>
+              <div class="contact-name">${contact.name || 'Emergency Contact'}</div>
+              <div>${contact.phone}</div>
+              ${contact.relationship ? `<div style="font-size: 12px; opacity: 0.8;">${contact.relationship}</div>` : ''}
+            </div>
+            <div style="font-size: 24px;">📞</div>
+          </div>
+        `).join('');
+      }
+
+      // Load emergency contacts
+      async function loadEmergencyContacts() {
+        try {
+          const contacts = await getEmergencyContacts();
+          renderContacts(contacts);
+        } catch (error) {
+          console.error('Failed to load emergency contacts:', error);
+          contactsList.innerHTML = `
+            <div class="no-contacts">
+              Failed to load emergency contacts. Please try again.
+            </div>
+          `;
+        }
+      }
+
+      // Check location access
+      async function checkLocation() {
+        try {
+          updateLocationStatus('Checking location access...');
+          await getCurrentLocation();
+          updateLocationStatus('Location access granted ✓');
+        } catch (error) {
+          console.error('Location error:', error);
+          updateLocationStatus('Location access denied. SOS may not work properly.', true);
+        }
+      }
+
+      // SOS button click handler
+      sosBtn.addEventListener('click', async function() {
+        if (sosBtn.classList.contains('sending')) {
+          return; // Prevent multiple clicks
+        }
+
+        sosBtn.classList.add('sending');
+        sosBtn.innerHTML = `
+          <span style="font-size: 48px;">⏳</span>
+          <span style="font-size: 16px; margin-top: 10px;">SENDING...</span>
+        `;
+
+        try {
+          // Get current location
+          updateLocationStatus('Getting your location...');
+          const location = await getCurrentLocation();
+          
+          // Send SOS alert
+          updateLocationStatus('Sending SOS alert...');
+          const response = await sendSOSAlert('Emergency SOS alert', 'other');
+          
+          showAlert('SOS alert sent successfully! Emergency contacts have been notified.', 'success');
+          updateLocationStatus('SOS sent successfully ✓');
+          
+          console.log('SOS alert response:', response);
+          
+        } catch (error) {
+          console.error('SOS alert failed:', error);
+          showAlert('Failed to send SOS alert. Please try again.', 'error');
+          updateLocationStatus('SOS failed. Please try again.', true);
+        } finally {
+          // Reset button
+          sosBtn.classList.remove('sending');
+          sosBtn.innerHTML = `
+            <span style="font-size: 48px;">🚨</span>
+            <span style="font-size: 16px; margin-top: 10px;">SEND SOS</span>
+          `;
+        }
+      });
+
+      // Initialize page
+      document.addEventListener('DOMContentLoaded', async () => {
+        await checkLocation();
+        await loadEmergencyContacts();
+      });
+    </script>
+  </body>
+</html>

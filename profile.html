@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - Voice of Her</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="fire.js"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        font-family: 'Arial', sans-serif;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .profile-section {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-title {
+        color: #333;
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #667eea;
+        padding-bottom: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+        font-weight: bold;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #ff4757, #ff3742);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #2ed573, #1e90ff);
+      }
+
+      .contacts-list {
+        display: grid;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .contact-card {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .contact-card:hover {
+        border-color: #667eea;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+      }
+
+      .contact-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .contact-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .contact-phone {
+        color: #667eea;
+        font-weight: bold;
+        margin: 5px 0;
+      }
+
+      .contact-relationship {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .contact-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .add-contact-form {
+        background: #f8f9fa;
+        border: 2px dashed #667eea;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        display: none;
+      }
+
+      .add-contact-form.show {
+        display: block;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+
+      .alert {
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .alert-error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .loading {
+        opacity: 0.7;
+        pointer-events: none;
+      }
+
+      .back-btn {
+        background: linear-gradient(135deg, #6c757d, #495057);
+        margin-bottom: 20px;
+      }
+
+      .logout-btn {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        float: right;
+      }
+
+      @media (max-width: 768px) {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        
+        .contact-actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Profile & Emergency Contacts</h1>
+        <p>Manage your profile and emergency contacts for SOS alerts</p>
+      </div>
+
+      <button class="btn back-btn" onclick="window.location.href='index (1).html'">
+        ← Back to Home
+      </button>
+      <button class="btn logout-btn" onclick="logout()">
+        Logout
+      </button>
+
+      <div id="alert-container"></div>
+
+      <!-- Profile Section -->
+      <div class="profile-section">
+        <h2 class="section-title">Profile Information</h2>
+        <form id="profile-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="Enter your email">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" placeholder="Enter your phone number" readonly>
+            </div>
+            <div class="form-group">
+              <label for="aadhar">Aadhar Number</label>
+              <input type="text" id="aadhar" placeholder="Your Aadhar number" readonly>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success">Update Profile</button>
+        </form>
+      </div>
+
+      <!-- Emergency Contacts Section -->
+      <div class="profile-section">
+        <h2 class="section-title">Emergency Contacts</h2>
+        <button class="btn btn-success" id="add-contact-btn">
+          + Add Emergency Contact
+        </button>
+
+        <div class="add-contact-form" id="add-contact-form">
+          <h3>Add New Emergency Contact</h3>
+          <form id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-name">Contact Name</label>
+                <input type="text" id="contact-name" placeholder="Enter contact name" required>
+              </div>
+              <div class="form-group">
+                <label for="contact-phone">Phone Number</label>
+                <input type="tel" id="contact-phone" placeholder="Enter phone number" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="contact-relationship">Relationship (Optional)</label>
+              <input type="text" id="contact-relationship" placeholder="e.g., Mother, Father, Friend">
+            </div>
+            <button type="submit" class="btn btn-success">Add Contact</button>
+            <button type="button" class="btn" onclick="toggleAddContactForm()">Cancel</button>
+          </form>
+        </div>
+
+        <div class="contacts-list" id="contacts-list">
+          <div style="text-align: center; color: #666; padding: 20px;">
+            Loading emergency contacts...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { 
+        getUserProfile, 
+        updateUserProfile, 
+        getEmergencyContacts, 
+        addEmergencyContact, 
+        deleteEmergencyContact,
+        logout,
+        isLoggedIn 
+      } from './fire.js';
+
+      // Check if user is logged in
+      if (!isLoggedIn()) {
+        window.location.href = 'login.html';
+      }
+
+      // Make logout function global
+      window.logout = logout;
+
+      const profileForm = document.getElementById('profile-form');
+      const contactForm = document.getElementById('contact-form');
+      const addContactBtn = document.getElementById('add-contact-btn');
+      const addContactForm = document.getElementById('add-contact-form');
+      const contactsList = document.getElementById('contacts-list');
+      const alertContainer = document.getElementById('alert-container');
+
+      // Show alert function
+      function showAlert(message, type = 'success') {
+        alertContainer.innerHTML = `
+          <div class="alert alert-${type}">
+            ${message}
+          </div>
+        `;
+        
+        setTimeout(() => {
+          alertContainer.innerHTML = '';
+        }, 5000);
+      }
+
+      // Toggle add contact form
+      window.toggleAddContactForm = function() {
+        addContactForm.classList.toggle('show');
+        if (addContactForm.classList.contains('show')) {
+          addContactBtn.textContent = 'Cancel';
+        } else {
+          addContactBtn.textContent = '+ Add Emergency Contact';
+          contactForm.reset();
+        }
+      };
+
+      // Load user profile
+      async function loadProfile() {
+        try {
+          const profile = await getUserProfile();
+          
+          document.getElementById('name').value = profile.name || '';
+          document.getElementById('email').value = profile.email || '';
+          document.getElementById('phone').value = profile.phone || '';
+          document.getElementById('aadhar').value = profile.aadhar || '';
+          
+        } catch (error) {
+          console.error('Failed to load profile:', error);
+          showAlert('Failed to load profile information', 'error');
+        }
+      }
+
+      // Load emergency contacts
+      async function loadContacts() {
+        try {
+          const contacts = await getEmergencyContacts();
+          renderContacts(contacts);
+        } catch (error) {
+          console.error('Failed to load contacts:', error);
+          contactsList.innerHTML = `
+            <div style="text-align: center; color: #666; padding: 20px;">
+              Failed to load emergency contacts. Please try again.
+            </div>
+          `;
+        }
+      }
+
+      // Render contacts
+      function renderContacts(contacts) {
+        if (!contacts || contacts.length === 0) {
+          contactsList.innerHTML = `
+            <div style="text-align: center; color: #666; padding: 20px;">
+              No emergency contacts found. Add your first emergency contact to get started.
+            </div>
+          `;
+          return;
+        }
+
+        contactsList.innerHTML = contacts.map(contact => `
+          <div class="contact-card">
+            <div class="contact-header">
+              <div class="contact-name">${contact.name}</div>
+              <div class="contact-actions">
+                <button class="btn btn-danger" onclick="deleteContact('${contact._id}')">
+                  Delete
+                </button>
+              </div>
+            </div>
+            <div class="contact-phone">📞 ${contact.phone}</div>
+            ${contact.relationship ? `<div class="contact-relationship">👥 ${contact.relationship}</div>` : ''}
+          </div>
+        `).join('');
+      }
+
+      // Delete contact function (global)
+      window.deleteContact = async function(contactId) {
+        if (!confirm('Are you sure you want to delete this emergency contact?')) {
+          return;
+        }
+
+        try {
+          await deleteEmergencyContact(contactId);
+          showAlert('Emergency contact deleted successfully');
+          loadContacts(); // Reload contacts
+        } catch (error) {
+          console.error('Failed to delete contact:', error);
+          showAlert('Failed to delete emergency contact', 'error');
+        }
+      };
+
+      // Profile form submit
+      profileForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = profileForm.querySelector('button[type="submit"]');
+        submitBtn.classList.add('loading');
+        submitBtn.textContent = 'Updating...';
+
+        try {
+          const name = document.getElementById('name').value.trim();
+          const email = document.getElementById('email').value.trim();
+
+          await updateUserProfile({ name, email });
+          showAlert('Profile updated successfully');
+          
+        } catch (error) {
+          console.error('Failed to update profile:', error);
+          showAlert('Failed to update profile', 'error');
+        } finally {
+          submitBtn.classList.remove('loading');
+          submitBtn.textContent = 'Update Profile';
+        }
+      });
+
+      // Contact form submit
+      contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        submitBtn.classList.add('loading');
+        submitBtn.textContent = 'Adding...';
+
+        try {
+          const name = document.getElementById('contact-name').value.trim();
+          const phone = document.getElementById('contact-phone').value.trim();
+          const relationship = document.getElementById('contact-relationship').value.trim();
+
+          await addEmergencyContact(name, phone, relationship);
+          showAlert('Emergency contact added successfully');
+          
+          // Reset form and hide
+          contactForm.reset();
+          toggleAddContactForm();
+          loadContacts(); // Reload contacts
+          
+        } catch (error) {
+          console.error('Failed to add contact:', error);
+          showAlert('Failed to add emergency contact', 'error');
+        } finally {
+          submitBtn.classList.remove('loading');
+          submitBtn.textContent = 'Add Contact';
+        }
+      });
+
+      // Add contact button click
+      addContactBtn.addEventListener('click', toggleAddContactForm);
+
+      // Initialize page
+      document.addEventListener('DOMContentLoaded', async () => {
+        await loadProfile();
+        await loadContacts();
+      });
+    </script>
+  </body>
+</html> 
