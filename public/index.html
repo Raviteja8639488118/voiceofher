@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EMPOWER HER</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="fire.js"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="logo-heading">
+          <img
+            src="https://cdn.glitch.global/2488023b-07ee-4e6e-8cda-cd0bd2a1aeed/logo.jpg?v=1742859756744"
+            alt="Logo"
+          />
+          <h1>VOICE OF HER</h1>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#aboutus">About Us</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="profile.html" id="profile-link" style="display: none;">Profile</a></li>
+            <li><a href="login.html" id="login-btn" class="login-btn">Login</a></li>
+            <li><a href="#" id="logout-btn" class="logout-btn" style="display: none;">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="content">
+        <div class="grid">
+          <div class="block">
+            <a href="sos.html">
+              <img
+                src="https://cdn.glitch.global/2488023b-07ee-4e6e-8cda-cd0bd2a1aeed/security.jpg?v=1742859774820"
+                alt="SOS"
+              />
+              <p>SOS</p>
+            </a>
+          </div>
+          <div class="block">
+            <a href="economics.html">
+              <img
+                src="https://cdn.glitch.global/2488023b-07ee-4e6e-8cda-cd0bd2a1aeed/economy.jpg?v=1742859786329"
+                alt="Economic Development"
+              />
+              <p>Economic Development</p>
+            </a>
+          </div>
+          <div class="block">
+            <a href="health.html">
+              <img
+                src="https://cdn.glitch.global/2488023b-07ee-4e6e-8cda-cd0bd2a1aeed/health.jpg?v=1742859767084"
+                alt="Health"
+              />
+              <p>Health</p>
+            </a>
+          </div>
+          <div class="block">
+            <a href="education.html">
+              <img
+                src="https://cdn.glitch.global/2488023b-07ee-4e6e-8cda-cd0bd2a1aeed/education.jpg?v=1742859794212"
+                alt="Education"
+              />
+              <p>Education</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Us Section -->
+      <section id="aboutus" class="about-section">
+        <h2>About Us</h2>
+        <p>
+          <strong>Voice of Her</strong> is a platform dedicated to empowering
+          women by providing access to essential resources, support systems, and
+          opportunities for growth. Our project focuses on safety, economic
+          development, health, and education, aiming to uplift women and help
+          them achieve their full potential. We believe in creating a supportive
+          community where women can find help, share their stories, and inspire
+          each other to overcome challenges and succeed.
+        </p>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="contact-section">
+        <h2>Contact</h2>
+        <ul>
+          <li>
+            Email:
+            <a href="mailto:majjineeraja8121@gmail.com"
+              >majjineeraja8121@gmail.com</a
+            >
+          </li>
+          <li>Phone: +91-8977462100</li>
+          <li>
+            LinkedIn:
+            <a
+              href="https://www.linkedin.com//vignan institute of information technology"
+              target="_blank"
+              >Your Profile</a
+            >
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>&copy; 2025 Voice of Her. All rights reserved.</footer>
+
+    <script type="module">
+      import { isLoggedIn, logout } from './fire.js';
+
+      // Update navigation based on login status
+      function updateNavigation() {
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const profileLink = document.getElementById('profile-link');
+
+        if (isLoggedIn()) {
+          loginBtn.style.display = 'none';
+          logoutBtn.style.display = 'inline-block';
+          profileLink.style.display = 'inline-block';
+        } else {
+          loginBtn.style.display = 'inline-block';
+          logoutBtn.style.display = 'none';
+          profileLink.style.display = 'none';
+        }
+      }
+
+      // Add logout functionality
+      document.getElementById('logout-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
+
+      // Initialize navigation
+      document.addEventListener('DOMContentLoaded', updateNavigation);
+    </script>
+  </body>
+</html>
