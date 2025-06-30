@@ -47,6 +47,11 @@ app.use('/api/users', userRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Voice of Her Backend is running' });
 });
+// Root route
+app.get('/', (req, res) => {
+  res.send('Welcome to the Voice of Her API 👋');
+});
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
